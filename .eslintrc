@@ -23,6 +23,7 @@
     "no-prototype-builtins": 0,
     "mocha/no-hooks-for-single-case": 0,
     "quote-props": 0,
-    "chai-friendly/no-unused-expressions": 0
+    "chai-friendly/no-unused-expressions": 0,
+    "no-async-promise-executor": 0
   }
 }

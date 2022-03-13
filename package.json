@@ -7,6 +7,9 @@
     "dist/**/*"
   ],
   "scripts": {
+    "eslint": "eslint --fix \"src/**/*.ts\"",
+    "prettier": "prettier --write \"src/**/*.ts\"",
+    "formatter": "npm run eslint && npm run prettier",
     "ts-bin": "ts-node -r tsconfig-paths/register",
     "ts-bin:dev": "cross-env NODE_OPTIONS=--max_old_space_size=8192 NODE_ENV=development tsnd --poll --respawn --watch src/**/*.{ts} -r tsconfig-paths/register src/app.ts",
     "ts-bin:test": "cross-env NODE_OPTIONS=--max_old_space_size=8192 NODE_ENV=test mocha -r ts-node -r tsconfig-paths/register",
@@ -18,7 +21,7 @@
     "start:docker": "pm2-runtime dist/pm2.config.js",
     "runner": "ts-node -T src/configs/config.runner.ts",
     "cleanup": "rimraf dist",
-    "build": "npm run cleanup && npm run ts-bin:prod && npm run runner",
+    "build": "npm run formatter && npm run cleanup && npm run ts-bin:prod && npm run runner",
     "dev": "npm run runner && npm run ts-bin:dev",
     "test": "npm run ts-bin:test",
     "test:cov": "npm run ts-bin:test:coverage",
