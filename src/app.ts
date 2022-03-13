@@ -120,7 +120,8 @@ export class App {
       session({
         resave: false,
         saveUninitialized: false,
-        secret: process.env.SESSION_SECRET_KEY as string
+        secret: process.env.SESSION_SECRET_KEY as string,
+        cookie: { httpOnly: true, sameSite: 'strict' }
       })
     )
     if (!['production', 'test'].includes(this.env)) {
