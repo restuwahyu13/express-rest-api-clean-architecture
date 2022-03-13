@@ -46,14 +46,10 @@
     ".nyc_output/**/*",
     "dist",
     "ormconfig/*.{ts,js}",
-    "script.config.ts",
     "openapi/*.{yml,json}",
     "pm2.config.js",
-    "tsconfig.json",
     "Dockerfile",
     "docker-compose.yml",
-    "package.json",
-    "package-lock.json",
     "swaggers/*"
   ]
 }

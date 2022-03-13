@@ -41,15 +41,11 @@
     "src/__tests__/**/*",
     ".nyc_output/**/*",
     "dist",
-    "src/configs/script.config.tsjs}",
-    "script.config.ts",
+    "ormconfig/*.{ts,js}",
     "openapi/*.{yml,json}",
     "pm2.config.js",
-    "tsconfig.prod.json",
     "Dockerfile",
     "docker-compose.yml",
-    "package.json",
-    "package-lock.json",
     "swaggers/*"
   ],
   "ts-node": {
