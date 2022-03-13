@@ -1,0 +1,198 @@
+#######################
+# USER LOGIN ROUTE
+#######################
+/user/login:
+  post:
+    tags:
+      - users route
+    summary: Request users login from server
+    description: Login for users using email and password after register success
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/login'
+          examples:
+            'login':
+              $ref: '#/components/example/login'
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Login Success
+                data:
+                  type: object
+                  properties:
+                    accessToken:
+                      type: string
+                      example: 'ysDbvAwcIcDCOtC1HcCmChL5wWC6CejRPWD9.ysDjTWC6GcqcTQ1buQqcIcDkv2boTA9fGNHUT21buQqoS29nCcqcwg9mTP9jTWC6GMqcuQZ0CdirHdK2HdS3HdUsFWDfyBUcIdY2HXS3HNKqGXCmCgZ1TWC6Cg5pTAOnSRVqCh0.ckigNif4ySzlMN6Z0dYwxgQlfv5CdBx4vZ1bn6NU3hm'
+                    refreshToken:
+                      type: string
+                      example: 'ysDbvAwcIcDCOtC1HcCmChL5wWC6CejRPWD9.ysDjTWC6GcqcTQ1buQqcIcDkv2boTA9fGNHUT21buQqoS29nCcqcwg9mTP9jTWC6GMqcuQZ0CdirHdK2HdS3HdUsFWDfyBUcIdY2HXesHNe2GXCmCgZ1TWC6Cg5pTAOnSRVqCh0.3Cgi_gbybmipq_YKVlHv6xUw_vPLF3kQmaf-bTpDi_m'
+                    accessTokenExpired:
+                      type: string
+                      example: '1 Days'
+                    refreshTokenExpired:
+                      type: string
+                      example: '30 Days'
+                pagination:
+                  type: string
+                  example: null
+      '400':
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - error1:
+                  type: object
+                  properties:
+                    stat_code:
+                      type: number
+                      format: integer
+                      example: 400
+                    stat_message:
+                      type: string
+                      example: Email johndoe13@gmail.com is not never registered
+                - error2:
+                  type: object
+                  properties:
+                    stat_code:
+                      type: number
+                      format: integer
+                      example: 400
+                    stat_message:
+                      type: string
+                      example: Incorect password or username
+      '403':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 403
+                stat_message:
+                  type: string
+                  example: Store access token into database failed
+#######################
+# USER REGISTER ROUTE
+#######################
+/user/register:
+  post:
+    tags:
+      - users route
+    summary: Request users register from server
+    description: Register new users account before login into application
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/register'
+          examples:
+            'register':
+              $ref: '#/components/example/register'
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Create new account success
+      '400':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 400
+                stat_message:
+                  type: string
+                  example: Email johndoe13@gmail.com already taken
+      '403':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 403
+                stat_message:
+                  type: string
+                  example: Create new account failed
+#############################
+#############################
+# COMPONENTS TERITORY
+#############################
+#############################
+components:
+  #############################
+  #############################
+  # REQ COMPONENTS SCHEMA TERITORY
+  #############################
+  #############################
+  schemas:
+    #############################
+    # LOGIN SCHEMA TERITORY
+    #############################
+    login:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+    #############################
+    # REGISTER SCHEMA TERITORY
+    #############################
+    register:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        # role_id:
+        #   type: number
+        #   format: integer
+  #############################
+  #############################
+  # REQ EXAMPLES SCHEMA TERITORY
+  #############################
+  #############################
+  example:
+    login:
+      value:
+        email: johndoe13@gmail.com
+        password: qwerty12
+    register:
+      value:
+        email: johndoe13@gmail.com
+        password: qwerty12
+        # role_id: 1

@@ -1,0 +1,15 @@
+{
+  "included": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/configs/**/*",
+    "src/routes/**/*",
+    "src/dto/**/*",
+    "src/interfaces/**/*",
+    "src/middlewares/**/*",
+    "src/databases/**/*",
+    "src/templates/**/*",
+    "src/__tests__/**/*"
+  ]
+}

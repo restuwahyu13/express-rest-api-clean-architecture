@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  title: Express Rest API V1
+  description: Express Backend Service Rest API
+  version: 1.0.0
+### ===========================
+### ===========================
+### ENDPOINT SERVER TERITORY
+### ===========================
+### ===========================
+servers:
+  - url: '{protocol}://{host}'
+    description: '{description}'
+    variables:
+      host:
+        default: 'localhost:3000/api/v1'
+        enum:
+          - api-service.com/api/v1
+          - localhost:3000/api/v1
+      protocol:
+        default: http
+        enum:
+          - http
+          - https
+      description:
+        default: Optional server description, e.g. Main (production) server
+        enum:
+          - Optional server description, e.g. Main (production) server
+          - Optional server description, e.g. Internal staging server for testing
+#############################
+#############################
+# COMPONENTS TERITORY
+#############################
+#############################
+components:
+  #############################
+  # SECURITY TERITORY
+  #############################
+  securitySchemes:
+    authentication:
+      type: http
+      scheme: bearer
+### ==============================
+### ==============================
+###  PATHS DOCUMENTATION TERITORY
+### ==============================
+### ==============================
+paths:
+  ### ==============================
+  ###  USERS DOCUMENTATION TERITORY
+  ### ==============================
+  /user/login:
+    $ref: 'swaggers/swagger.users.yml#/~1user~1login'
+  /user/register:
+    $ref: 'swaggers/swagger.users.yml#/~1user~1register'
+  ### ==============================
+  ###  ROLES DOCUMENTATION TERITORY
+  ### ==============================
+  /role:
+    $ref: 'swaggers/swagger.roles.yml#/~1role'
+  /role/{id}:
+    $ref: 'swaggers/swagger.roles.yml#/~1role~1{id}'
+  ### ==============================
+  ###  AUTHORS DOCUMENTATION TERITORY
+  ### ==============================
+  /author:
+    $ref: 'swaggers/swagger.authors.yml#/~1author'
+  /author/{id}:
+    $ref: 'swaggers/swagger.authors.yml#/~1author~1{id}'
+  ### ==============================
+  ###  RATINGS DOCUMENTATION TERITORY
+  ### ==============================
+  /rating:
+    $ref: 'swaggers/swagger.ratings.yml#/~1rating'
+  /rating/{id}:
+    $ref: 'swaggers/swagger.ratings.yml#/~1rating~1{id}'
+  ### ==============================
+  ###  BOOKS DOCUMENTATION TERITORY
+  ### ==============================
+  /book:
+    $ref: 'swaggers/swagger.books.yml#/~1book'
+  /book/{id}:
+    $ref: 'swaggers/swagger.books.yml#/~1book~1{id}'

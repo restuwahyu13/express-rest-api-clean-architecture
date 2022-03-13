@@ -1,0 +1,397 @@
+#######################
+# RATINGS CREATE ROUTE
+#######################
+/rating:
+  post:
+    security:
+      - authentication: []
+    tags:
+      - ratings route
+    summary: Request add new ratings from server
+    description: Add new ratings for books by specific users
+    requestBody:
+      required: true
+      content:
+        application/json:
+          required: true
+          schema:
+            $ref: '#/components/schemas/createRating'
+          examples:
+            'create':
+              $ref: '#/components/example/createRating'
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Create new ratings success
+      '400':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 400
+                stat_message:
+                  type: string
+                  example: You are already give rating for this books
+      '403':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 403
+                stat_message:
+                  type: string
+                  example: Create new ratings failed
+  #######################
+  # RATINGS GET ALL ROUTE
+  #######################
+  get:
+    security:
+      - authentication: []
+    tags:
+      - ratings route
+    summary: Request get all book rating from server
+    description: Get all book rating for users
+    parameters:
+      - in: query
+        required: false
+        name: limit
+        schema:
+          type: number
+          format: integer
+          example: 10
+      - in: query
+        required: false
+        name: offset
+        schema:
+          type: number
+          format: integer
+          example: 0
+      - in: query
+        required: false
+        name: sort
+        schema:
+          type: string
+          example: DESC
+      - in: query
+        required: false
+        name: filter
+        schema:
+          type: string
+          example: rating=5
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Ratings Is Ok
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        format: integer
+                        example: 1
+                      rating:
+                        type: string
+                        example: 5
+                      noted:
+                        type: string
+                        example: lumayan bagus buku nya
+                      created_at:
+                        type: number
+                        format: date-time
+                        example: '2022-03-07T08:39:10.184Z'
+                      book:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                            format: integer
+                            example: 1
+                          isbn:
+                            type: number
+                            format: integer
+                            example: 323554954
+                          price:
+                            type: number
+                            format: integer
+                            example: 90000
+                          description:
+                            type: string
+                            example: buku tentang pahlawan
+                          release_date:
+                            type: string
+                            format: date-time
+                            example: '2019-11-21'
+                          pages:
+                            type: number
+                            format: integer
+                            example: 300
+                          publisher:
+                            type: string
+                            example: gramedia
+                          language:
+                            type: string
+                            example: indonesia
+                          images:
+                            type: array
+                            items:
+                              type: string
+                              example: 'example.png'
+                          created_at:
+                            type: number
+                            format: date-time
+                            example: '2022-03-07T08:39:10.184Z'
+                          updated_at:
+                            type: string
+                            format: date-time
+                            example: '2022-03-07T08:39:10.184Z'
+                          deleted_at:
+                            type: string
+                            format: date-time
+                            example: null
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                            format: integer
+                            example: 1
+                          email:
+                            type: string
+                            format: email
+                            example: johndoe13@gmail.com
+                          password:
+                            type: string
+                            example: $2a$10$6FrLsJNQ4r5Ffz8zVQsua.cfmDsunxtiHQlW0eKZGNZ.K25McsFtO
+                          created_at:
+                            type: number
+                            format: date-time
+                            example: '2022-03-07T08:39:10.184Z'
+                          updated_at:
+                            type: string
+                            format: date-time
+                            example: '2022-03-07T08:39:10.184Z'
+                          deleted_at:
+                            type: string
+                            format: date-time
+                            example: null
+                pagination:
+                  type: object
+                  properties:
+                    limit:
+                      type: number
+                      format: integer
+                      example: 10
+                    offset:
+                      type: number
+                      format: integer
+                      example: 0
+                    sort:
+                      type: string
+                      example: 'DESC'
+  ##########################
+  # RATINGS GET BY ID ROUTE
+  ##########################
+/rating/{id}:
+  get:
+    security:
+      - authentication: []
+    tags:
+      - ratings route
+    summary: Request get book rating by id from server
+    description: Get book rating for users by specific id
+    parameters:
+      - in: path
+        name: id
+        description: you must pass user id
+        schema:
+          type: number
+          format: integer
+          example: 1
+        required: true
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Ratings Is Ok
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      format: integer
+                      example: 1
+                    rating:
+                      type: string
+                      example: 5
+                    noted:
+                      type: string
+                      example: lumayan bagus buku nya
+                    created_at:
+                      type: number
+                      format: date-time
+                      example: '2022-03-07T08:39:10.184Z'
+                    book:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          format: integer
+                          example: 1
+                        isbn:
+                          type: number
+                          format: integer
+                          example: 323554954
+                        price:
+                          type: number
+                          format: integer
+                          example: 90000
+                        description:
+                          type: string
+                          example: buku tentang pahlawan
+                        release_date:
+                          type: string
+                          format: date-time
+                          example: '2019-11-21'
+                        pages:
+                          type: number
+                          format: integer
+                          example: 300
+                        publisher:
+                          type: string
+                          example: gramedia
+                        language:
+                          type: string
+                          example: indonesia
+                        images:
+                          type: array
+                          items:
+                            type: string
+                            example: 'example.png'
+                        created_at:
+                          type: number
+                          format: date-time
+                          example: '2022-03-07T08:39:10.184Z'
+                        updated_at:
+                          type: string
+                          format: date-time
+                          example: '2022-03-07T08:39:10.184Z'
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          example: null
+                    user:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          format: integer
+                          example: 1
+                        email:
+                          type: string
+                          format: email
+                          example: johndoe13@gmail.com
+                        password:
+                          type: string
+                          example: $2a$10$6FrLsJNQ4r5Ffz8zVQsua.cfmDsunxtiHQlW0eKZGNZ.K25McsFtO
+                        created_at:
+                          type: number
+                          format: date-time
+                          example: '2022-03-07T08:39:10.184Z'
+                        updated_at:
+                          type: string
+                          format: date-time
+                          example: '2022-03-07T08:39:10.184Z'
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          example: null
+                pagination:
+                  type: string
+                  example: null
+      '400':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 400
+                stat_message:
+                  type: string
+                  example: Find ratings for this user id 1, is not exist
+#############################
+#############################
+# COMPONENTS TERITORY
+#############################
+#############################
+components:
+  #############################
+  # REQ SCHEMAS TERITORY
+  #############################
+  schemas:
+    #############################
+    # CREATE RATING SCHEMA TERITORY
+    #############################
+    createRating:
+      type: object
+      properties:
+        rating:
+          type: string
+        noted:
+          type: string
+        book_id:
+          type: number
+          format: integer
+  #############################
+  # REQ EXAMPLES TERITORY
+  #############################
+  example:
+    ###############################
+    # CREATE RATING EXAMPLE TERITORY
+    ###############################
+    createRating:
+      value:
+        rating: '4.5'
+        noted: bukunya bagus cuy
+        book_id: 1

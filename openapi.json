@@ -1,0 +1,2484 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Express Rest API V1",
+    "description": "Express Backend Service Rest API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "{protocol}://{host}",
+      "description": "{description}",
+      "variables": {
+        "host": {
+          "default": "localhost:3000/api/v1",
+          "enum": [
+            "api-service.com/api/v1",
+            "localhost:3000/api/v1"
+          ]
+        },
+        "protocol": {
+          "default": "http",
+          "enum": [
+            "http",
+            "https"
+          ]
+        },
+        "description": {
+          "default": "Optional server description, e.g. Main (production) server",
+          "enum": [
+            "Optional server description, e.g. Main (production) server",
+            "Optional server description, e.g. Internal staging server for testing"
+          ]
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "authentication": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "paths": {
+    "/user/login": {
+      "post": {
+        "tags": [
+          "users route"
+        ],
+        "summary": "Request users login from server",
+        "description": "Login for users using email and password after register success",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "login": {
+                  "value": {
+                    "email": "johndoe13@gmail.com",
+                    "password": "qwerty12"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Login Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "accessToken": {
+                          "type": "string",
+                          "example": "ysDbvAwcIcDCOtC1HcCmChL5wWC6CejRPWD9.ysDjTWC6GcqcTQ1buQqcIcDkv2boTA9fGNHUT21buQqoS29nCcqcwg9mTP9jTWC6GMqcuQZ0CdirHdK2HdS3HdUsFWDfyBUcIdY2HXS3HNKqGXCmCgZ1TWC6Cg5pTAOnSRVqCh0.ckigNif4ySzlMN6Z0dYwxgQlfv5CdBx4vZ1bn6NU3hm"
+                        },
+                        "refreshToken": {
+                          "type": "string",
+                          "example": "ysDbvAwcIcDCOtC1HcCmChL5wWC6CejRPWD9.ysDjTWC6GcqcTQ1buQqcIcDkv2boTA9fGNHUT21buQqoS29nCcqcwg9mTP9jTWC6GMqcuQZ0CdirHdK2HdS3HdUsFWDfyBUcIdY2HXesHNe2GXCmCgZ1TWC6Cg5pTAOnSRVqCh0.3Cgi_gbybmipq_YKVlHv6xUw_vPLF3kQmaf-bTpDi_m"
+                        },
+                        "accessTokenExpired": {
+                          "type": "string",
+                          "example": "1 Days"
+                        },
+                        "refreshTokenExpired": {
+                          "type": "string",
+                          "example": "30 Days"
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "string",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "error1": null,
+                      "type": "object",
+                      "properties": {
+                        "stat_code": {
+                          "type": "number",
+                          "format": "integer",
+                          "example": 400
+                        },
+                        "stat_message": {
+                          "type": "string",
+                          "example": "Email johndoe13@gmail.com is not never registered"
+                        }
+                      }
+                    },
+                    {
+                      "error2": null,
+                      "type": "object",
+                      "properties": {
+                        "stat_code": {
+                          "type": "number",
+                          "format": "integer",
+                          "example": 400
+                        },
+                        "stat_message": {
+                          "type": "string",
+                          "example": "Incorect password or username"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 403
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Store access token into database failed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/register": {
+      "post": {
+        "tags": [
+          "users route"
+        ],
+        "summary": "Request users register from server",
+        "description": "Register new users account before login into application",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "register": {
+                  "value": {
+                    "email": "johndoe13@gmail.com",
+                    "password": "qwerty12"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Create new account success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 400
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Email johndoe13@gmail.com already taken"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 403
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Create new account failed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/role": {
+      "post": {
+        "security": [
+          {
+            "authentication": []
+          }
+        ],
+        "tags": [
+          "roles route"
+        ],
+        "summary": "Request create new role from server",
+        "description": "Create new role access for users by super admin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "create": {
+                  "value": {
+                    "name": "admin"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Create new role success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 400
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Role name already exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 403
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Create new role failed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "authentication": []
+          }
+        ],
+        "tags": [
+          "roles route"
+        ],
+        "summary": "Request get all role from server",
+        "description": "Get all role access for users by super admin",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Roles Is Ok"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "format": "integer",
+                            "example": 1
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "admin"
+                          },
+                          "created_at": {
+                            "type": "number",
+                            "format": "date-time",
+                            "example": "2022-03-07T08:39:10.184Z"
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2022-03-07T08:39:10.184Z"
+                          },
+                          "deleted_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": null
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "string",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/role/{id}": {
+      "get": {
+        "security": [
+          {
+            "authentication": []
+          }
+        ],
+        "tags": [
+          "roles route"
+        ],
+        "summary": "Request get all role from server",
+        "description": "Get all role access for users by super admin",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "number",
+              "format": "integer",
+              "example": 1
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Roles Is Ok"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "format": "integer",
+                          "example": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "admin"
+                        },
+                        "created_at": {
+                          "type": "number",
+                          "format": "date-time",
+                          "example": "2022-03-07T08:39:10.184Z"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2022-03-07T08:39:10.184Z"
+                        },
+                        "deleted_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": null
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "string",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 400
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Find roles for this id 1, is not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "authentication": []
+          }
+        ],
+        "tags": [
+          "roles route"
+        ],
+        "summary": "Request update old role from server",
+        "description": "Update old role access for users by super admin",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "number",
+              "format": "integer",
+              "example": 1
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "update": {
+                  "value": {
+                    "name": "admin"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Updated roles success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 400
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Find roles for this id 1, is not exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 403
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Updated roles failed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/author": {
+      "post": {
+        "security": [
+          {
+            "authentication": []
+          }
+        ],
+        "tags": [
+          "authors route"
+        ],
+        "summary": "Request create new author book from server",
+        "description": "Create new author book by super admin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstname": {
+                    "type": "string"
+                  },
+                  "lastname": {
+                    "type": "string"
+                  },
+                  "place_of_birth": {
+                    "type": "string"
+                  },
+                  "date_of_birth": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              },
+              "examples": {
+                "create": {
+                  "value": {
+                    "firstname": "samsul",
+                    "lastname": "rizal",
+                    "place_of_birth": "depok",
+                    "date_of_birth": "1996-01-01"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Create new authors success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 400
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Authors name samsul, already exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 403
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Create new authors failed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "authentication": []
+          }
+        ],
+        "tags": [
+          "authors route"
+        ],
+        "summary": "Request get all authors from server",
+        "description": "Get all authors by super admin",
+        "parameters": [
+          {
+            "in": "query",
+            "required": false,
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "format": "integer",
+              "example": 10
+            }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "name": "offset",
+            "schema": {
+              "type": "number",
+              "format": "integer",
+              "example": 0
+            }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "name": "sort",
+            "schema": {
+              "type": "string",
+              "example": "DESC"
+            }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "example": "firstname=samsul"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Authors Is Ok"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "format": "integer",
+                            "example": 1
+                          },
+                          "firstname": {
+                            "type": "string",
+                            "example": "anto"
+                          },
+                          "lastname": {
+                            "type": "string",
+                            "example": "cavalera"
+                          },
+                          "place_of_birth": {
+                            "type": "string",
+                            "example": "jakarta"
+                          },
+                          "date_of_birth": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "1968-01-18"
+                          },
+                          "created_at": {
+                            "type": "number",
+                            "format": "date-time",
+                            "example": "2022-03-07T08:39:10.184Z"
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2022-03-07T08:39:10.184Z"
+                          },
+                          "deleted_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": null
+                          },
+                          "books": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "number",
+                                  "format": "integer",
+                                  "example": 1
+                                },
+                                "isbn": {
+                                  "type": "number",
+                                  "format": "integer",
+                                  "example": 323554954
+                                },
+                                "price": {
+                                  "type": "number",
+                                  "format": "integer",
+                                  "example": 90000
+                                },
+                                "description": {
+                                  "type": "string",
+                                  "example": "buku tentang pahlawan"
+                                },
+                                "release_date": {
+                                  "type": "string",
+                                  "format": "date-time",
+                                  "example": "2019-11-21"
+                                },
+                                "pages": {
+                                  "type": "number",
+                                  "format": "integer",
+                                  "example": 300
+                                },
+                                "publisher": {
+                                  "type": "string",
+                                  "example": "gramedia"
+                                },
+                                "language": {
+                                  "type": "string",
+                                  "example": "indonesia"
+                                },
+                                "images": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "example": "example.png"
+                                  }
+                                },
+                                "created_at": {
+                                  "type": "number",
+                                  "format": "date-time",
+                                  "example": "2022-03-07T08:39:10.184Z"
+                                },
+                                "updated_at": {
+                                  "type": "string",
+                                  "format": "date-time",
+                                  "example": "2022-03-07T08:39:10.184Z"
+                                },
+                                "deleted_at": {
+                                  "type": "string",
+                                  "format": "date-time",
+                                  "example": null
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "limit": {
+                          "type": "number",
+                          "format": "integer",
+                          "example": 10
+                        },
+                        "offset": {
+                          "type": "number",
+                          "format": "integer",
+                          "example": 0
+                        },
+                        "sort": {
+                          "type": "string",
+                          "example": "DESC"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/author/{id}": {
+      "get": {
+        "security": [
+          {
+            "authentication": []
+          }
+        ],
+        "tags": [
+          "authors route"
+        ],
+        "summary": "Request get authors by id from server",
+        "description": "Get authors by specific author id by super admin",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "number",
+              "format": "integer",
+              "example": 1
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Authors Is Ok"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "format": "integer",
+                          "example": 1
+                        },
+                        "firstname": {
+                          "type": "string",
+                          "example": "anto"
+                        },
+                        "lastname": {
+                          "type": "string",
+                          "example": "cavalera"
+                        },
+                        "place_of_birth": {
+                          "type": "string",
+                          "example": "jakarta"
+                        },
+                        "date_of_birth": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "1968-01-18"
+                        },
+                        "created_at": {
+                          "type": "number",
+                          "format": "date-time",
+                          "example": "2022-03-07T08:39:10.184Z"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2022-03-07T08:39:10.184Z"
+                        },
+                        "deleted_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": null
+                        },
+                        "books": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "format": "integer",
+                                "example": 1
+                              },
+                              "isbn": {
+                                "type": "number",
+                                "format": "integer",
+                                "example": 323554954
+                              },
+                              "price": {
+                                "type": "number",
+                                "format": "integer",
+                                "example": 90000
+                              },
+                              "description": {
+                                "type": "string",
+                                "example": "buku tentang pahlawan"
+                              },
+                              "release_date": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2019-11-21"
+                              },
+                              "pages": {
+                                "type": "number",
+                                "format": "integer",
+                                "example": 300
+                              },
+                              "publisher": {
+                                "type": "string",
+                                "example": "gramedia"
+                              },
+                              "language": {
+                                "type": "string",
+                                "example": "indonesia"
+                              },
+                              "images": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "example": "example.png"
+                                }
+                              },
+                              "created_at": {
+                                "type": "number",
+                                "format": "date-time",
+                                "example": "2022-03-07T08:39:10.184Z"
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2022-03-07T08:39:10.184Z"
+                              },
+                              "deleted_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": null
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "string",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 400
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Find roles for this id 1, is not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "authentication": []
+          }
+        ],
+        "tags": [
+          "authors route"
+        ],
+        "summary": "Request update author book from server",
+        "description": "Update author book by super admin",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "number",
+              "format": "integer",
+              "example": 1
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstname": {
+                    "type": "string"
+                  },
+                  "lastname": {
+                    "type": "string"
+                  },
+                  "place_of_birth": {
+                    "type": "string"
+                  },
+                  "date_of_birth": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              },
+              "examples": {
+                "update": {
+                  "value": {
+                    "firstname": "anto",
+                    "lastname": "cavalera",
+                    "place_of_birth": "jakarta",
+                    "date_of_birth": "1992-03-21"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Updated authors success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 400
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Find authors for this id 1, is not exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 403
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Updated authors failed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rating": {
+      "post": {
+        "security": [
+          {
+            "authentication": []
+          }
+        ],
+        "tags": [
+          "ratings route"
+        ],
+        "summary": "Request add new ratings from server",
+        "description": "Add new ratings for books by specific users",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "rating": {
+                    "type": "string"
+                  },
+                  "noted": {
+                    "type": "string"
+                  },
+                  "book_id": {
+                    "type": "number",
+                    "format": "integer"
+                  }
+                }
+              },
+              "examples": {
+                "create": {
+                  "value": {
+                    "rating": "4.5",
+                    "noted": "bukunya bagus cuy",
+                    "book_id": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Create new ratings success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 400
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "You are already give rating for this books"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 403
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Create new ratings failed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "authentication": []
+          }
+        ],
+        "tags": [
+          "ratings route"
+        ],
+        "summary": "Request get all book rating from server",
+        "description": "Get all book rating for users",
+        "parameters": [
+          {
+            "in": "query",
+            "required": false,
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "format": "integer",
+              "example": 10
+            }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "name": "offset",
+            "schema": {
+              "type": "number",
+              "format": "integer",
+              "example": 0
+            }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "name": "sort",
+            "schema": {
+              "type": "string",
+              "example": "DESC"
+            }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "example": "rating=5"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Ratings Is Ok"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "format": "integer",
+                            "example": 1
+                          },
+                          "rating": {
+                            "type": "string",
+                            "example": 5
+                          },
+                          "noted": {
+                            "type": "string",
+                            "example": "lumayan bagus buku nya"
+                          },
+                          "created_at": {
+                            "type": "number",
+                            "format": "date-time",
+                            "example": "2022-03-07T08:39:10.184Z"
+                          },
+                          "book": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "format": "integer",
+                                "example": 1
+                              },
+                              "isbn": {
+                                "type": "number",
+                                "format": "integer",
+                                "example": 323554954
+                              },
+                              "price": {
+                                "type": "number",
+                                "format": "integer",
+                                "example": 90000
+                              },
+                              "description": {
+                                "type": "string",
+                                "example": "buku tentang pahlawan"
+                              },
+                              "release_date": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2019-11-21"
+                              },
+                              "pages": {
+                                "type": "number",
+                                "format": "integer",
+                                "example": 300
+                              },
+                              "publisher": {
+                                "type": "string",
+                                "example": "gramedia"
+                              },
+                              "language": {
+                                "type": "string",
+                                "example": "indonesia"
+                              },
+                              "images": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "example": "example.png"
+                                }
+                              },
+                              "created_at": {
+                                "type": "number",
+                                "format": "date-time",
+                                "example": "2022-03-07T08:39:10.184Z"
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2022-03-07T08:39:10.184Z"
+                              },
+                              "deleted_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": null
+                              }
+                            }
+                          },
+                          "user": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "format": "integer",
+                                "example": 1
+                              },
+                              "email": {
+                                "type": "string",
+                                "format": "email",
+                                "example": "johndoe13@gmail.com"
+                              },
+                              "password": {
+                                "type": "string",
+                                "example": "$2a$10$6FrLsJNQ4r5Ffz8zVQsua.cfmDsunxtiHQlW0eKZGNZ.K25McsFtO"
+                              },
+                              "created_at": {
+                                "type": "number",
+                                "format": "date-time",
+                                "example": "2022-03-07T08:39:10.184Z"
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2022-03-07T08:39:10.184Z"
+                              },
+                              "deleted_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": null
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "limit": {
+                          "type": "number",
+                          "format": "integer",
+                          "example": 10
+                        },
+                        "offset": {
+                          "type": "number",
+                          "format": "integer",
+                          "example": 0
+                        },
+                        "sort": {
+                          "type": "string",
+                          "example": "DESC"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rating/{id}": {
+      "get": {
+        "security": [
+          {
+            "authentication": []
+          }
+        ],
+        "tags": [
+          "ratings route"
+        ],
+        "summary": "Request get book rating by id from server",
+        "description": "Get book rating for users by specific id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "you must pass user id",
+            "schema": {
+              "type": "number",
+              "format": "integer",
+              "example": 1
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Ratings Is Ok"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "format": "integer",
+                          "example": 1
+                        },
+                        "rating": {
+                          "type": "string",
+                          "example": 5
+                        },
+                        "noted": {
+                          "type": "string",
+                          "example": "lumayan bagus buku nya"
+                        },
+                        "created_at": {
+                          "type": "number",
+                          "format": "date-time",
+                          "example": "2022-03-07T08:39:10.184Z"
+                        },
+                        "book": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number",
+                              "format": "integer",
+                              "example": 1
+                            },
+                            "isbn": {
+                              "type": "number",
+                              "format": "integer",
+                              "example": 323554954
+                            },
+                            "price": {
+                              "type": "number",
+                              "format": "integer",
+                              "example": 90000
+                            },
+                            "description": {
+                              "type": "string",
+                              "example": "buku tentang pahlawan"
+                            },
+                            "release_date": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2019-11-21"
+                            },
+                            "pages": {
+                              "type": "number",
+                              "format": "integer",
+                              "example": 300
+                            },
+                            "publisher": {
+                              "type": "string",
+                              "example": "gramedia"
+                            },
+                            "language": {
+                              "type": "string",
+                              "example": "indonesia"
+                            },
+                            "images": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "example.png"
+                              }
+                            },
+                            "created_at": {
+                              "type": "number",
+                              "format": "date-time",
+                              "example": "2022-03-07T08:39:10.184Z"
+                            },
+                            "updated_at": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2022-03-07T08:39:10.184Z"
+                            },
+                            "deleted_at": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": null
+                            }
+                          }
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number",
+                              "format": "integer",
+                              "example": 1
+                            },
+                            "email": {
+                              "type": "string",
+                              "format": "email",
+                              "example": "johndoe13@gmail.com"
+                            },
+                            "password": {
+                              "type": "string",
+                              "example": "$2a$10$6FrLsJNQ4r5Ffz8zVQsua.cfmDsunxtiHQlW0eKZGNZ.K25McsFtO"
+                            },
+                            "created_at": {
+                              "type": "number",
+                              "format": "date-time",
+                              "example": "2022-03-07T08:39:10.184Z"
+                            },
+                            "updated_at": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2022-03-07T08:39:10.184Z"
+                            },
+                            "deleted_at": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": null
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "string",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 400
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Find ratings for this user id 1, is not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/book": {
+      "post": {
+        "security": [
+          {
+            "authentication": []
+          }
+        ],
+        "tags": [
+          "books route"
+        ],
+        "summary": "Request create new book from server",
+        "description": "Create new book by super admin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "isbn": {
+                    "type": "number",
+                    "format": "integer"
+                  },
+                  "price": {
+                    "type": "number",
+                    "format": "integer"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "release_date": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "pages": {
+                    "type": "number"
+                  },
+                  "publisher": {
+                    "type": "string"
+                  },
+                  "language": {
+                    "type": "string"
+                  },
+                  "images": {
+                    "type": "string",
+                    "format": "base64"
+                  },
+                  "author_id": {
+                    "type": "integer",
+                    "format": "number"
+                  }
+                }
+              },
+              "examples": {
+                "create": {
+                  "value": {
+                    "name": "kapten amerika",
+                    "isbn": 323554954,
+                    "price": 90000,
+                    "description": "buku tentang pahlawan",
+                    "release_date": "2019-11-21",
+                    "pages": 300,
+                    "publisher": "gramedia",
+                    "language": "indonesia",
+                    "images": "example.png",
+                    "author_id": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Create new books success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 400
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Book already exist for this isbn 323554954"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 403
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Create new books failed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "authentication": []
+          }
+        ],
+        "tags": [
+          "books route"
+        ],
+        "summary": "Request get all books from server",
+        "description": "Get all books by super admin",
+        "parameters": [
+          {
+            "in": "query",
+            "required": false,
+            "name": "limit",
+            "schema": {
+              "type": "number",
+              "format": "integer",
+              "example": 10
+            }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "name": "offset",
+            "schema": {
+              "type": "number",
+              "format": "integer",
+              "example": 0
+            }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "name": "sort",
+            "schema": {
+              "type": "string",
+              "example": "DESC"
+            }
+          },
+          {
+            "in": "query",
+            "required": false,
+            "name": "filter",
+            "schema": {
+              "type": "string",
+              "example": "name=kapten amerika"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Authors Is Ok"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "format": "integer",
+                            "example": 1
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "kapten amerika"
+                          },
+                          "isbn": {
+                            "type": "number",
+                            "format": "integer",
+                            "example": 323554954
+                          },
+                          "price": {
+                            "type": "number",
+                            "format": "integer",
+                            "example": 90000
+                          },
+                          "description": {
+                            "type": "string",
+                            "example": "buku tentang pahlawan"
+                          },
+                          "release_date": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2019-11-21"
+                          },
+                          "pages": {
+                            "type": "number",
+                            "format": "integer",
+                            "example": 300
+                          },
+                          "publisher": {
+                            "type": "string",
+                            "example": "gramedia"
+                          },
+                          "language": {
+                            "type": "string",
+                            "example": "indonesia"
+                          },
+                          "images": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "example": "example.png"
+                            }
+                          },
+                          "created_at": {
+                            "type": "number",
+                            "format": "date-time",
+                            "example": "2022-03-07T08:39:10.184Z"
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2022-03-07T08:39:10.184Z"
+                          },
+                          "deleted_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": null
+                          },
+                          "author": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "format": "integer",
+                                "example": 1
+                              },
+                              "firstname": {
+                                "type": "string",
+                                "example": "anto"
+                              },
+                              "lastname": {
+                                "type": "string",
+                                "example": "cavalera"
+                              },
+                              "place_of_birth": {
+                                "type": "string",
+                                "example": "jakarta"
+                              },
+                              "date_of_birth": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "1968-01-18"
+                              },
+                              "created_at": {
+                                "type": "number",
+                                "format": "date-time",
+                                "example": "2022-03-07T08:39:10.184Z"
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2022-03-07T08:39:10.184Z"
+                              },
+                              "deleted_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": null
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "limit": {
+                          "type": "number",
+                          "format": "integer",
+                          "example": 10
+                        },
+                        "offset": {
+                          "type": "number",
+                          "format": "integer",
+                          "example": 0
+                        },
+                        "sort": {
+                          "type": "string",
+                          "example": "DESC"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/book/{id}": {
+      "get": {
+        "security": [
+          {
+            "authentication": []
+          }
+        ],
+        "tags": [
+          "books route"
+        ],
+        "summary": "Request get books by id from server",
+        "description": "Get books by specific book id by super admin",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "number",
+              "format": "integer",
+              "example": 1
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Books Is Ok"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "format": "integer",
+                          "example": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "kapten amerika"
+                        },
+                        "isbn": {
+                          "type": "number",
+                          "format": "integer",
+                          "example": 323554954
+                        },
+                        "price": {
+                          "type": "number",
+                          "format": "integer",
+                          "example": 90000
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "buku tentang pahlawan"
+                        },
+                        "release_date": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2019-11-21"
+                        },
+                        "pages": {
+                          "type": "number",
+                          "format": "integer",
+                          "example": 300
+                        },
+                        "publisher": {
+                          "type": "string",
+                          "example": "gramedia"
+                        },
+                        "language": {
+                          "type": "string",
+                          "example": "indonesia"
+                        },
+                        "images": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "example": "example.png"
+                          }
+                        },
+                        "created_at": {
+                          "type": "number",
+                          "format": "date-time",
+                          "example": "2022-03-07T08:39:10.184Z"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2022-03-07T08:39:10.184Z"
+                        },
+                        "deleted_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": null
+                        },
+                        "author": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number",
+                              "format": "integer",
+                              "example": 1
+                            },
+                            "firstname": {
+                              "type": "string",
+                              "example": "anto"
+                            },
+                            "lastname": {
+                              "type": "string",
+                              "example": "cavalera"
+                            },
+                            "place_of_birth": {
+                              "type": "string",
+                              "example": "jakarta"
+                            },
+                            "date_of_birth": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "1968-01-18"
+                            },
+                            "created_at": {
+                              "type": "number",
+                              "format": "date-time",
+                              "example": "2022-03-07T08:39:10.184Z"
+                            },
+                            "updated_at": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2022-03-07T08:39:10.184Z"
+                            },
+                            "deleted_at": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": null
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "string",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 400
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Find books for this id 1, is not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "authentication": []
+          }
+        ],
+        "tags": [
+          "books route"
+        ],
+        "summary": "Request update old book from server",
+        "description": "Update old book by super admin",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "number",
+              "format": "integer",
+              "example": 1
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "isbn": {
+                    "type": "number",
+                    "format": "integer"
+                  },
+                  "price": {
+                    "type": "number",
+                    "format": "integer"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "release_date": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "pages": {
+                    "type": "number"
+                  },
+                  "publisher": {
+                    "type": "string"
+                  },
+                  "language": {
+                    "type": "string"
+                  },
+                  "images": {
+                    "type": "string",
+                    "format": "base64"
+                  },
+                  "author_id": {
+                    "type": "integer",
+                    "format": "number"
+                  }
+                }
+              },
+              "examples": {
+                "update": {
+                  "value": {
+                    "name": "si unyil",
+                    "isbn": 323554950,
+                    "price": 90000,
+                    "description": "cerita anak - anak",
+                    "release_date": "2001-12-03",
+                    "pages": 300,
+                    "publisher": "gramedia",
+                    "language": "indonesia",
+                    "images": "example.png",
+                    "author_id": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 200
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Updated books success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 400
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Find books for this id 1, is not exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stat_code": {
+                      "type": "number",
+                      "format": "integer",
+                      "example": 403
+                    },
+                    "stat_message": {
+                      "type": "string",
+                      "example": "Updated books failed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

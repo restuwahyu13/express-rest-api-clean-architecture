@@ -1,0 +1,13 @@
+{
+  "spec": "src/__tests__/**/*.spec.ts",
+  "require": "ts-node/register",
+  "extension": ["ts"],
+  "full-trace": true,
+  "recursive": true,
+  "diff": true,
+  "exit": true,
+  "slow": 300,
+  "retries": 5,
+  "timeout": 0,
+  "ignore": ["node_modules", ".nyc_output/**/*", "dist", "src/__tests__/mocks/**/*"]
+}

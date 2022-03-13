@@ -1,0 +1,519 @@
+#######################
+# BOOKS CREATE ROUTE
+#######################
+/book:
+  post:
+    security:
+      - authentication: []
+    tags:
+      - books route
+    summary: Request create new book from server
+    description: Create new book by super admin
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          required: true
+          schema:
+            $ref: '#/components/schemas/createBook'
+          examples:
+            'create':
+              $ref: '#/components/example/createBook'
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Create new books success
+      '400':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 400
+                stat_message:
+                  type: string
+                  example: Book already exist for this isbn 323554954
+      '403':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 403
+                stat_message:
+                  type: string
+                  example: Create new books failed
+  #######################
+  # BOOKS GET ALL ROUTE
+  #######################
+  get:
+    security:
+      - authentication: []
+    tags:
+      - books route
+    summary: Request get all books from server
+    description: Get all books by super admin
+    parameters:
+      - in: query
+        required: false
+        name: limit
+        schema:
+          type: number
+          format: integer
+          example: 10
+      - in: query
+        required: false
+        name: offset
+        schema:
+          type: number
+          format: integer
+          example: 0
+      - in: query
+        required: false
+        name: sort
+        schema:
+          type: string
+          example: DESC
+      - in: query
+        required: false
+        name: filter
+        schema:
+          type: string
+          example: name=kapten amerika
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Authors Is Ok
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        format: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: kapten amerika
+                      isbn:
+                        type: number
+                        format: integer
+                        example: 323554954
+                      price:
+                        type: number
+                        format: integer
+                        example: 90000
+                      description:
+                        type: string
+                        example: buku tentang pahlawan
+                      release_date:
+                        type: string
+                        format: date-time
+                        example: '2019-11-21'
+                      pages:
+                        type: number
+                        format: integer
+                        example: 300
+                      publisher:
+                        type: string
+                        example: gramedia
+                      language:
+                        type: string
+                        example: indonesia
+                      images:
+                        type: array
+                        items:
+                          type: string
+                          example: 'example.png'
+                      created_at:
+                        type: number
+                        format: date-time
+                        example: '2022-03-07T08:39:10.184Z'
+                      updated_at:
+                        type: string
+                        format: date-time
+                        example: '2022-03-07T08:39:10.184Z'
+                      deleted_at:
+                        type: string
+                        format: date-time
+                        example: null
+                      author:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                            format: integer
+                            example: 1
+                          firstname:
+                            type: string
+                            example: anto
+                          lastname:
+                            type: string
+                            example: cavalera
+                          place_of_birth:
+                            type: string
+                            example: jakarta
+                          date_of_birth:
+                            type: string
+                            format: date-time
+                            example: '1968-01-18'
+                          created_at:
+                            type: number
+                            format: date-time
+                            example: '2022-03-07T08:39:10.184Z'
+                          updated_at:
+                            type: string
+                            format: date-time
+                            example: '2022-03-07T08:39:10.184Z'
+                          deleted_at:
+                            type: string
+                            format: date-time
+                            example: null
+                pagination:
+                  type: object
+                  properties:
+                    limit:
+                      type: number
+                      format: integer
+                      example: 10
+                    offset:
+                      type: number
+                      format: integer
+                      example: 0
+                    sort:
+                      type: string
+                      example: 'DESC'
+  ##########################
+  # BOOKS GET BY ID ROUTE
+  ##########################
+/book/{id}:
+  get:
+    security:
+      - authentication: []
+    tags:
+      - books route
+    summary: Request get books by id from server
+    description: Get books by specific book id by super admin
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: number
+          format: integer
+          example: 1
+        required: true
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Books Is Ok
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      format: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: kapten amerika
+                    isbn:
+                      type: number
+                      format: integer
+                      example: 323554954
+                    price:
+                      type: number
+                      format: integer
+                      example: 90000
+                    description:
+                      type: string
+                      example: buku tentang pahlawan
+                    release_date:
+                      type: string
+                      format: date-time
+                      example: '2019-11-21'
+                    pages:
+                      type: number
+                      format: integer
+                      example: 300
+                    publisher:
+                      type: string
+                      example: gramedia
+                    language:
+                      type: string
+                      example: indonesia
+                    images:
+                      type: array
+                      items:
+                        type: string
+                        example: 'example.png'
+                    created_at:
+                      type: number
+                      format: date-time
+                      example: '2022-03-07T08:39:10.184Z'
+                    updated_at:
+                      type: string
+                      format: date-time
+                      example: '2022-03-07T08:39:10.184Z'
+                    deleted_at:
+                      type: string
+                      format: date-time
+                      example: null
+                    author:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          format: integer
+                          example: 1
+                        firstname:
+                          type: string
+                          example: anto
+                        lastname:
+                          type: string
+                          example: cavalera
+                        place_of_birth:
+                          type: string
+                          example: jakarta
+                        date_of_birth:
+                          type: string
+                          format: date-time
+                          example: '1968-01-18'
+                        created_at:
+                          type: number
+                          format: date-time
+                          example: '2022-03-07T08:39:10.184Z'
+                        updated_at:
+                          type: string
+                          format: date-time
+                          example: '2022-03-07T08:39:10.184Z'
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          example: null
+                pagination:
+                  type: string
+                  example: null
+      '400':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 400
+                stat_message:
+                  type: string
+                  example: Find books for this id 1, is not exist
+  #######################
+  # BOOKS UPDATE ROUTE
+  #######################
+  put:
+    security:
+      - authentication: []
+    tags:
+      - books route
+    summary: Request update old book from server
+    description: Update old book by super admin
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: number
+          format: integer
+          example: 1
+        required: true
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          required: true
+          schema:
+            $ref: '#/components/schemas/updateBook'
+          examples:
+            'update':
+              $ref: '#/components/example/updateBook'
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Updated books success
+      '400':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 400
+                stat_message:
+                  type: string
+                  example: Find books for this id 1, is not exist
+      '403':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 403
+                stat_message:
+                  type: string
+                  example: Updated books failed
+#############################
+#############################
+# COMPONENTS TERITORY
+#############################
+#############################
+components:
+  #############################
+  # REQ SCHEMAS TERITORY
+  #############################
+  schemas:
+    ###############################
+    # CREATE BOOK SCHEMA TERITORY
+    ###############################
+    createBook:
+      type: object
+      properties:
+        name:
+          type: string
+        isbn:
+          type: number
+          format: integer
+        price:
+          type: number
+          format: integer
+        description:
+          type: string
+        release_date:
+          type: string
+          format: date-time
+        pages:
+          type: number
+        publisher:
+          type: string
+        language:
+          type: string
+        images:
+          type: string
+          format: base64
+        author_id:
+          type: integer
+          format: number
+    ################################
+    # UPDATE BOOK SCHEMA TERITORY
+    ################################
+    updateBook:
+      type: object
+      properties:
+        name:
+          type: string
+        isbn:
+          type: number
+          format: integer
+        price:
+          type: number
+          format: integer
+        description:
+          type: string
+        release_date:
+          type: string
+          format: date-time
+        pages:
+          type: number
+        publisher:
+          type: string
+        language:
+          type: string
+        images:
+          type: string
+          format: base64
+        author_id:
+          type: integer
+          format: number
+  #############################
+  # REQ EXAMPLES TERITORY
+  #############################
+  example:
+    #################################
+    # CREATE BOOK EXAMPLE TERITORY
+    #################################
+    createBook:
+      value:
+        name: kapten amerika
+        isbn: 323554954
+        price: 90000
+        description: buku tentang pahlawan
+        release_date: '2019-11-21'
+        pages: 300
+        publisher: gramedia
+        language: indonesia
+        images: 'example.png'
+        author_id: 1
+    #################################
+    # UPDATE BOOK EXAMPLE TERITORY
+    #################################
+    updateBook:
+      value:
+        name: si unyil
+        isbn: 323554950
+        price: 90000
+        description: cerita anak - anak
+        release_date: '2001-12-03'
+        pages: 300
+        publisher: gramedia
+        language: indonesia
+        images: 'example.png'
+        author_id: 1

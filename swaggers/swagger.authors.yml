@@ -1,0 +1,473 @@
+#######################
+# AUTHORS CREATE ROUTE
+#######################
+/author:
+  post:
+    security:
+      - authentication: []
+    tags:
+      - authors route
+    summary: Request create new author book from server
+    description: Create new author book by super admin
+    requestBody:
+      required: true
+      content:
+        application/json:
+          required: true
+          schema:
+            $ref: '#/components/schemas/createAuthor'
+          examples:
+            'create':
+              $ref: '#/components/example/createAuthor'
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Create new authors success
+      '400':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 400
+                stat_message:
+                  type: string
+                  example: Authors name samsul, already exist
+      '403':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 403
+                stat_message:
+                  type: string
+                  example: Create new authors failed
+  #######################
+  # AUTHORS GET ALL ROUTE
+  #######################
+  get:
+    security:
+      - authentication: []
+    tags:
+      - authors route
+    summary: Request get all authors from server
+    description: Get all authors by super admin
+    parameters:
+      - in: query
+        required: false
+        name: limit
+        schema:
+          type: number
+          format: integer
+          example: 10
+      - in: query
+        required: false
+        name: offset
+        schema:
+          type: number
+          format: integer
+          example: 0
+      - in: query
+        required: false
+        name: sort
+        schema:
+          type: string
+          example: DESC
+      - in: query
+        required: false
+        name: filter
+        schema:
+          type: string
+          example: firstname=samsul
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Authors Is Ok
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        format: integer
+                        example: 1
+                      firstname:
+                        type: string
+                        example: anto
+                      lastname:
+                        type: string
+                        example: cavalera
+                      place_of_birth:
+                        type: string
+                        example: jakarta
+                      date_of_birth:
+                        type: string
+                        format: date-time
+                        example: '1968-01-18'
+                      created_at:
+                        type: number
+                        format: date-time
+                        example: '2022-03-07T08:39:10.184Z'
+                      updated_at:
+                        type: string
+                        format: date-time
+                        example: '2022-03-07T08:39:10.184Z'
+                      deleted_at:
+                        type: string
+                        format: date-time
+                        example: null
+                      books:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                              format: integer
+                              example: 1
+                            isbn:
+                              type: number
+                              format: integer
+                              example: 323554954
+                            price:
+                              type: number
+                              format: integer
+                              example: 90000
+                            description:
+                              type: string
+                              example: buku tentang pahlawan
+                            release_date:
+                              type: string
+                              format: date-time
+                              example: '2019-11-21'
+                            pages:
+                              type: number
+                              format: integer
+                              example: 300
+                            publisher:
+                              type: string
+                              example: gramedia
+                            language:
+                              type: string
+                              example: indonesia
+                            images:
+                              type: array
+                              items:
+                                type: string
+                                example: 'example.png'
+                            created_at:
+                              type: number
+                              format: date-time
+                              example: '2022-03-07T08:39:10.184Z'
+                            updated_at:
+                              type: string
+                              format: date-time
+                              example: '2022-03-07T08:39:10.184Z'
+                            deleted_at:
+                              type: string
+                              format: date-time
+                              example: null
+                pagination:
+                  type: object
+                  properties:
+                    limit:
+                      type: number
+                      format: integer
+                      example: 10
+                    offset:
+                      type: number
+                      format: integer
+                      example: 0
+                    sort:
+                      type: string
+                      example: 'DESC'
+  ##########################
+  # AUTHORS GET BY ID ROUTE
+  ##########################
+/author/{id}:
+  get:
+    security:
+      - authentication: []
+    tags:
+      - authors route
+    summary: Request get authors by id from server
+    description: Get authors by specific author id by super admin
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: number
+          format: integer
+          example: 1
+        required: true
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Authors Is Ok
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      format: integer
+                      example: 1
+                    firstname:
+                      type: string
+                      example: anto
+                    lastname:
+                      type: string
+                      example: cavalera
+                    place_of_birth:
+                      type: string
+                      example: jakarta
+                    date_of_birth:
+                      type: string
+                      format: date-time
+                      example: '1968-01-18'
+                    created_at:
+                      type: number
+                      format: date-time
+                      example: '2022-03-07T08:39:10.184Z'
+                    updated_at:
+                      type: string
+                      format: date-time
+                      example: '2022-03-07T08:39:10.184Z'
+                    deleted_at:
+                      type: string
+                      format: date-time
+                      example: null
+                    books:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                            format: integer
+                            example: 1
+                          isbn:
+                            type: number
+                            format: integer
+                            example: 323554954
+                          price:
+                            type: number
+                            format: integer
+                            example: 90000
+                          description:
+                            type: string
+                            example: buku tentang pahlawan
+                          release_date:
+                            type: string
+                            format: date-time
+                            example: '2019-11-21'
+                          pages:
+                            type: number
+                            format: integer
+                            example: 300
+                          publisher:
+                            type: string
+                            example: gramedia
+                          language:
+                            type: string
+                            example: indonesia
+                          images:
+                            type: array
+                            items:
+                              type: string
+                              example: 'example.png'
+                          created_at:
+                            type: number
+                            format: date-time
+                            example: '2022-03-07T08:39:10.184Z'
+                          updated_at:
+                            type: string
+                            format: date-time
+                            example: '2022-03-07T08:39:10.184Z'
+                          deleted_at:
+                            type: string
+                            format: date-time
+                            example: null
+                pagination:
+                  type: string
+                  example: null
+      '400':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 400
+                stat_message:
+                  type: string
+                  example: Find roles for this id 1, is not exist
+  #######################
+  # AUTHORS UPDATE ROUTE
+  #######################
+  put:
+    security:
+      - authentication: []
+    tags:
+      - authors route
+    summary: Request update author book from server
+    description: Update author book by super admin
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: number
+          format: integer
+          example: 1
+        required: true
+    requestBody:
+      required: true
+      content:
+        application/json:
+          required: true
+          schema:
+            $ref: '#/components/schemas/updateAuthor'
+          examples:
+            'update':
+              $ref: '#/components/example/updateAuthor'
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Updated authors success
+      '400':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 400
+                stat_message:
+                  type: string
+                  example: Find authors for this id 1, is not exist
+      '403':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 403
+                stat_message:
+                  type: string
+                  example: Updated authors failed
+#############################
+#############################
+# COMPONENTS TERITORY
+#############################
+#############################
+components:
+  #############################
+  # REQ SCHEMAS TERITORY
+  #############################
+  schemas:
+    ###############################
+    # CREATE AUTHOR SCHEMA TERITORY
+    ###############################
+    createAuthor:
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        place_of_birth:
+          type: string
+        date_of_birth:
+          type: string
+          format: date-time
+    ################################
+    # UPDATE AUTHOR SCHEMA TERITORY
+    ################################
+    updateAuthor:
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        place_of_birth:
+          type: string
+        date_of_birth:
+          type: string
+          format: date-time
+  #############################
+  # REQ EXAMPLES TERITORY
+  #############################
+  example:
+    #################################
+    # CREATE AUTHOR EXAMPLE TERITORY
+    #################################
+    createAuthor:
+      value:
+        firstname: samsul
+        lastname: rizal
+        place_of_birth: depok
+        date_of_birth: '1996-01-01'
+    #################################
+    # UPDATE AUTHOR EXAMPLE TERITORY
+    #################################
+    updateAuthor:
+      value:
+        firstname: anto
+        lastname: cavalera
+        place_of_birth: jakarta
+        date_of_birth: '1992-03-21'

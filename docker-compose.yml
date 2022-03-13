@@ -1,0 +1,65 @@
+version: '3'
+services:
+  ###################################
+  # APPLICATION SERVICE ENVIRONMENT
+  ###################################
+  app:
+    build: .
+    restart: always
+    healthcheck:
+      start_period: 60ms
+      timeout: 120s
+      interval: 30s
+      test: ifconfig | grep broadcast
+    ports:
+      - 3000:3000
+    env_file: .env
+    depends_on:
+      - database
+      - caching
+    volumes:
+      - ./:/usr/share/app
+      - /usr/share/app/node_modules
+    networks:
+      - node_networks
+##############################
+# DATABASE SERVICE ENVIRONMENT
+##############################
+  database:
+    image: postgres:14-alpine
+    restart: always
+    env_file: .env
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - 5432:5432
+    volumes:
+      - database:/var/lib/postgresql/data
+    networks:
+      - node_networks
+##############################
+# CACHING SERVICE ENVIRONMENT
+##############################
+  caching:
+    image: redis:6.2.1-alpine
+    restart: always
+    env_file: .env
+    ports:
+      - 6379:6379
+    volumes:
+      - caching:/var/lib/redis/data
+    networks:
+      - node_networks
+#############################
+# VOLUME PERSISTENT DATA
+#############################
+volumes:
+  database:
+  caching:
+#############################
+# NETWORKS SHARING GROUP
+#############################
+networks:
+  node_networks:

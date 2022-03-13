@@ -1,0 +1,293 @@
+#######################
+# ROLES CREATE ROUTE
+#######################
+/role:
+  post:
+    security:
+      - authentication: []
+    tags:
+      - roles route
+    summary: Request create new role from server
+    description: Create new role access for users by super admin
+    requestBody:
+      required: true
+      content:
+        application/json:
+          required: true
+          schema:
+            $ref: '#/components/schemas/createRole'
+          examples:
+            'create':
+              $ref: '#/components/example/createRole'
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Create new role success
+      '400':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 400
+                stat_message:
+                  type: string
+                  example: Role name already exist
+      '403':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 403
+                stat_message:
+                  type: string
+                  example: Create new role failed
+  #######################
+  # ROLES GET ALL ROUTE
+  #######################
+  get:
+    security:
+      - authentication: []
+    tags:
+      - roles route
+    summary: Request get all role from server
+    description: Get all role access for users by super admin
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Roles Is Ok
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        format: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: admin
+                      created_at:
+                        type: number
+                        format: date-time
+                        example: '2022-03-07T08:39:10.184Z'
+                      updated_at:
+                        type: string
+                        format: date-time
+                        example: '2022-03-07T08:39:10.184Z'
+                      deleted_at:
+                        type: string
+                        format: date-time
+                        example: null
+                pagination:
+                  type: string
+                  example: null
+  #######################
+  # ROLES GET BY ID ROUTE
+  #######################
+/role/{id}:
+  get:
+    security:
+      - authentication: []
+    tags:
+      - roles route
+    summary: Request get all role from server
+    description: Get all role access for users by super admin
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: number
+          format: integer
+          example: 1
+        required: true
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Roles Is Ok
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      format: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: admin
+                    created_at:
+                      type: number
+                      format: date-time
+                      example: '2022-03-07T08:39:10.184Z'
+                    updated_at:
+                      type: string
+                      format: date-time
+                      example: '2022-03-07T08:39:10.184Z'
+                    deleted_at:
+                      type: string
+                      format: date-time
+                      example: null
+                pagination:
+                  type: string
+                  example: null
+      '400':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 400
+                stat_message:
+                  type: string
+                  example: Find roles for this id 1, is not exist
+  #######################
+  # ROLES UPDATE ROUTE
+  #######################
+  put:
+    security:
+      - authentication: []
+    tags:
+      - roles route
+    summary: Request update old role from server
+    description: Update old role access for users by super admin
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: number
+          format: integer
+          example: 1
+        required: true
+    requestBody:
+      required: true
+      content:
+        application/json:
+          required: true
+          schema:
+            $ref: '#/components/schemas/updateRole'
+          examples:
+            'update':
+              $ref: '#/components/example/updateRole'
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 200
+                stat_message:
+                  type: string
+                  example: Updated roles success
+      '400':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 400
+                stat_message:
+                  type: string
+                  example: Find roles for this id 1, is not exist
+      '403':
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stat_code:
+                  type: number
+                  format: integer
+                  example: 403
+                stat_message:
+                  type: string
+                  example: Updated roles failed
+#############################
+#############################
+# COMPONENTS TERITORY
+#############################
+#############################
+components:
+  #############################
+  # REQ SCHEMAS TERITORY
+  #############################
+  schemas:
+    #############################
+    # CREATE ROLE SCHEMA TERITORY
+    #############################
+    createRole:
+      type: object
+      properties:
+        name:
+          type: string
+    #############################
+    # UPDATE ROLE SCHEMA TERITORY
+    #############################
+    updateRole:
+      type: object
+      properties:
+        name:
+          type: string
+  #############################
+  # REQ EXAMPLES TERITORY
+  #############################
+  example:
+    ###############################
+    # CREATE ROLE EXAMPLE TERITORY
+    ###############################
+    createRole:
+      value:
+        name: admin
+    ###############################
+    # UPDATE ROLE EXAMPLE TERITORY
+    ###############################
+    updateRole:
+      value:
+        name: admin

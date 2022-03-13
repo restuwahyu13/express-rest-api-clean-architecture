@@ -1,0 +1,28 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "extends": ["standard", "plugin:eslint-plugin/recommended", "plugin:chai-friendly/recommended", "plugin:mocha/recommended"],
+  "plugins": ["simple-import-sort"],
+  "rules": {
+    "space-before-function-paren": 0,
+    "no-throw-literal": 0,
+    "prefer-promise-reject-errors": 0,
+    "dot-notation": 0,
+    "prefer-const": 0,
+    "no-console": 1,
+    "quotes": 0,
+    "array-callback-return": 0,
+    "eqeqeq": 0,
+    "no-unneeded-ternary": 0,
+    "indent": 0,
+    "no-useless-constructor": 0,
+    "no-sparse-arrays": 0,
+    "no-prototype-builtins": 0,
+    "mocha/no-hooks-for-single-case": 0,
+    "quote-props": 0,
+    "chai-friendly/no-unused-expressions": 0
+  }
+}

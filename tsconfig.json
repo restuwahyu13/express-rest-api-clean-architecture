@@ -1,0 +1,61 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "baseUrl": "src",
+    "target": "ESNext",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "typeRoots": ["node_modules/@types/"],
+    "paths": {
+      "@/*": ["*"],
+      "@configs/*": ["configs/*"],
+      "@controllers/*": ["controllers/*"],
+      "@dto/*": ["dto/*"],
+      "@di/*": ["di/*"],
+      "@helpers/*": ["helpers/*"],
+      "@interfaces/*": ["interfaces/*"],
+      "@libs/*": ["libs/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@models/*": ["models/*"],
+      "@routes/*": ["routes/*"],
+      "@services/*": ["services/*"]
+    },
+    "strict": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "sourceMap": false,
+    "declaration": false,
+    "strictNullChecks": false,
+    "noEmit": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "src/__tests__/**/*",
+    ".nyc_output/**/*",
+    "dist",
+    "src/configs/script.config.tsjs}",
+    "script.config.ts",
+    "openapi/*.{yml,json}",
+    "pm2.config.js",
+    "tsconfig.prod.json",
+    "Dockerfile",
+    "docker-compose.yml",
+    "package.json",
+    "package-lock.json",
+    "swaggers/*"
+  ],
+  "ts-node": {
+    "compilerHost": true,
+    "transpileOnly": true,
+    "files": true,
+    "pretty": true
+  }
+}
