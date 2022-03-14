@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import 'dotenv/config'
-import 'express-http-error'
+import 'express-async-errors'
 import reusify from 'reusify'
 import express, { Express, Response, Request } from 'express'
 import http, { Server } from 'http'
