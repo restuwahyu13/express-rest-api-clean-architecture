@@ -36,8 +36,8 @@ export class App {
   private version: string
   private env: string
   private port: number
-  private pathEntitiesDir
-  private pathMigrationDir
+  private pathEntitiesDir: string
+  private pathMigrationDir: string
 
   constructor() {
     this.app = reusify(express).get() as Express
