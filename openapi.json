@@ -424,7 +424,7 @@
                             "example": "admin"
                           },
                           "created_at": {
-                            "type": "number",
+                            "type": "string",
                             "format": "date-time",
                             "example": "2022-03-07T08:39:10.184Z"
                           },
