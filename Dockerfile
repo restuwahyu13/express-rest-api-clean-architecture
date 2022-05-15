@@ -44,4 +44,4 @@ RUN rm -rf node_modules \
   && npm i --loglevel verbose --no-audit \
   && npm run build
 EXPOSE 3000
-CMD npm run prod
+CMD npm run start:docker
