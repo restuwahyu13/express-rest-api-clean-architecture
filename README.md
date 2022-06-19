@@ -1,6 +1,6 @@
 # Express Rest Api Clean Architecture
 
-The following is a folder pattern for express rest api starterkit structure pattern that I usually use, so if you are interested in the pattern I made, you can use it if you think it's good.
+The following is a folder pattern for express rest api starterkit structure pattern that I usually use, so if you are interested in the pattern I made, you can use it if you think it's good, check this link for new update for this architecture **[here](https://github.com/restuwahyu13/express-refactor-starterkit)**.
 
 ## Table Of Content
 
